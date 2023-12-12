@@ -7,6 +7,8 @@ export const EXAMPLE_SOLVED_LINES = [12, 38, 15, 77];
 
 export const EXAMPLE_SOLUTION = 142;
 
+export const SOLUTION = 54632;
+
 export const INPUT = `sdpgz3five4seven6fiveh
 876mbxbrntsfm
 fivek5mfzrdxfbn66nine8eight

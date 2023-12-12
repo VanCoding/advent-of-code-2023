@@ -1,9 +1,8 @@
-import { map, pipe, sortBy, filter } from "remeda";
 import {
   Query,
   solve as solvePart1,
   solveLines as solveLinesPart1,
-} from "../part-1";
+} from "../part-1/exercise";
 
 const QUERIES: Query[] = [
   { text: "0", value: 0 },

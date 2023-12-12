@@ -9,26 +9,7 @@ zoneight234
 export const EXAMPLE_SOLVED_LINES = [29, 83, 13, 24, 42, 14, 76];
 export const EXAMPLE_SOLUTION = 281;
 
-export const PARTIAL_INPUT = `6qnfivehnt31qcpmnhx
-onesnqrgxstfmzhtln5bnldmvlqzsh
-fourgn5fourggbddjsj34zncxtmxxvsvs
-4lnr6xjkpzdgvsevengplkjdjtns
-hzfplpdt9
-sf2twolj8
-6zghkzbfdjctpfp1
-eight65
-tvzmxzstsixmkvjkjl6eightninefour
-fivephplggzkmfivetjfourmvcpnjxfvg58eightwoc
-1fivehpleightfivethree4
-zeightwo8
-1jfcztzr5sixoneshmlpgtwofour
-3zksglknjmvqfqhfiveeight76onemldlltn
-9four4vtg32srrbqfczmnxdchtbvc
-csdb92sevenvsnxdbd
-4sevenseven6
-8two8rm3fkbsvphhdrznine
-trp149zxzrkk
-948two9ninenine`;
+export const SOLUTION = 54019;
 
 export const INPUT = `sdpgz3five4seven6fiveh
 876mbxbrntsfm

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { EXAMPLE_INPUT, EXAMPLE_SOLVED_LINES, INPUT } from "./input";
-import { solve, solveLines } from ".";
+import {
+  EXAMPLE_INPUT,
+  EXAMPLE_SOLUTION,
+  EXAMPLE_SOLVED_LINES,
+  INPUT,
+  SOLUTION,
+} from "./input";
+import { solve, solveLines } from "./exercise";
 
 describe("solveLines", () => {
   it("solves lines correctly", () => {
@@ -10,9 +16,9 @@ describe("solveLines", () => {
 
 describe("solve", () => {
   it("solves example", () => {
-    expect(solve(EXAMPLE_INPUT)).toBe(142);
+    expect(solve(EXAMPLE_INPUT)).toBe(EXAMPLE_SOLUTION);
   });
   it("solves exercise", () => {
-    expect(solve(INPUT)).toBe(54632);
+    expect(solve(INPUT)).toBe(SOLUTION);
   });
 });
