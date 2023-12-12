@@ -12,15 +12,15 @@ export const EXAMPLE_POSSIBILITIES = [true, true, false, false, true];
 
 export const EXAMPLE_SOLUTION = 8;
 
-export const EXERCISE_DICE_COUNTS: DiceCounts = {
+export const DICE_COUNTS: DiceCounts = {
   red: 12,
   green: 13,
   blue: 14,
 };
 
-export const EXERCISE_SOLUTION = 2369;
+export const SOLUTION = 2369;
 
-export const EXERCISE_GAMES = `Game 1: 7 blue, 6 green, 3 red; 3 red, 5 green, 1 blue; 1 red, 5 green, 8 blue; 3 red, 1 green, 5 blue
+export const GAMES = `Game 1: 7 blue, 6 green, 3 red; 3 red, 5 green, 1 blue; 1 red, 5 green, 8 blue; 3 red, 1 green, 5 blue
 Game 2: 9 green, 1 blue, 12 red; 1 blue, 18 green, 8 red; 2 blue, 6 green, 13 red; 3 blue, 13 red, 7 green; 5 blue, 4 red, 4 green; 6 blue, 7 green, 4 red
 Game 3: 5 blue, 9 red, 14 green; 10 green, 3 blue; 11 red, 2 blue, 8 green; 5 red, 2 blue; 5 blue, 7 green, 8 red
 Game 4: 2 red, 3 blue, 2 green; 17 green, 6 blue, 1 red; 3 blue, 5 green, 1 red; 4 red, 1 blue, 16 green; 5 red, 4 blue, 13 green; 14 green, 5 blue, 6 red

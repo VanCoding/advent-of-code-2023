@@ -5,9 +5,9 @@ import {
   EXAMPLE_GAMES,
   EXAMPLE_POSSIBILITIES,
   EXAMPLE_SOLUTION,
-  EXERCISE_DICE_COUNTS,
-  EXERCISE_GAMES,
-  EXERCISE_SOLUTION,
+  DICE_COUNTS,
+  GAMES,
+  SOLUTION,
 } from "./input";
 
 describe("parseGames", () => {
@@ -71,8 +71,6 @@ describe("solve", () => {
     expect(solve(EXAMPLE_GAMES, EXAMPLE_DICE_COUNTS)).toEqual(EXAMPLE_SOLUTION);
   });
   it("properly solves exercise", () => {
-    expect(solve(EXERCISE_GAMES, EXERCISE_DICE_COUNTS)).toEqual(
-      EXERCISE_SOLUTION
-    );
+    expect(solve(GAMES, DICE_COUNTS)).toEqual(SOLUTION);
   });
 });

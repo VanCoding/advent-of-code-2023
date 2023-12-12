@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseGames } from "../part-1/exercise";
-import { EXAMPLE_GAMES, EXERCISE_GAMES } from "../part-1/input";
+import { EXAMPLE_GAMES, GAMES } from "../part-1/input";
 import { getGamePower, solve } from "./exercise";
 import { EXAMPLE_GAME_POWERS, EXAMPLE_SOLUTION, SOLUTION } from "./input";
 
@@ -17,6 +17,6 @@ describe("solve", () => {
     expect(solve(EXAMPLE_GAMES)).toEqual(EXAMPLE_SOLUTION);
   });
   it("correclty solves example", () => {
-    expect(solve(EXERCISE_GAMES)).toEqual(SOLUTION);
+    expect(solve(GAMES)).toEqual(SOLUTION);
   });
 });
