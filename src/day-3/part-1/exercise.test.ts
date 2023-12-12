@@ -3,7 +3,6 @@ import {
   findNumbersInLine,
   findSymbolsInLine,
   getNumbersBorderingSymbol,
-  numberBordersSymbol,
   solve,
 } from "./exercise";
 import {
@@ -41,7 +40,7 @@ describe("findNumbersInLine", () => {
 
 describe("findSymbolsInLine", () => {
   it("finds symbols in line", () => {
-    expect(findSymbolsInLine("1.$22...#333", 1)).toEqual([
+    expect(findSymbolsInLine("1.$22...$333", 1, (c) => c === "$")).toEqual([
       {
         line: 1,
         index: 2,

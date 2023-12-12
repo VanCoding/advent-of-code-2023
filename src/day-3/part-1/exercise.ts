@@ -41,12 +41,13 @@ export const findNumbersInLine = (
 
 export const findSymbolsInLine = (
   line: string,
-  lineNumber: number
+  lineNumber: number,
+  match: (character: string) => boolean
 ): FoundSymbol[] =>
   line
     .split("")
     .flatMap((character, index) =>
-      isSymbol(character) ? [{ line: lineNumber, index }] : []
+      match(character) ? [{ line: lineNumber, index }] : []
     );
 
 export const numberBordersSymbol = (
@@ -63,7 +64,9 @@ export const numberBordersSymbol = (
 
 export const getNumbersBorderingSymbol = (input: string): number[] => {
   const lines = input.split("\n");
-  const symbols = lines.flatMap(findSymbolsInLine);
+  const symbols = lines.flatMap((line, index) =>
+    findSymbolsInLine(line, index, isSymbol)
+  );
   const numbers = lines.flatMap(findNumbersInLine);
   return pipe(
     numbers,
