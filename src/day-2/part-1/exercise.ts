@@ -50,7 +50,7 @@ const colorIsPossible = (
   diceCounts: DiceCounts,
   getCount: (set: DiceCounts) => number
 ) => getCount(maxCounts) <= getCount(diceCounts);
-const getMaxDiceCounts = (game: Game): DiceCounts => {
+export const getMaxDiceCounts = (game: Game): DiceCounts => {
   return {
     blue: getMaxDiceCount(game, (v) => v.blue),
     red: getMaxDiceCount(game, (v) => v.red),
