@@ -7,13 +7,13 @@ type Data = {
 
 type Mappings = Record<string, Mapping[]>;
 
-type Mapping = {
+export type Mapping = {
   sourceStart: number;
   destinationStart: number;
   range: number;
 };
 
-const chain = [
+export const chain = [
   "seed",
   "soil",
   "fertilizer",
