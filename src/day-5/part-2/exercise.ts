@@ -88,16 +88,7 @@ const mergeRanges = (ranges: Ranges): Ranges => {
   return ranges;
 };
 
-export const seedsToSoilRanges = (input: string) => {
-  const data = parseData(input);
-  const seedRanges = seedsToRanges(data.seeds);
-  return mapSourceRangesToTargetRanges(
-    seedRanges,
-    data.mappings["seed-to-soil"]
-  );
-};
-
-export const getLocationRanges = (input: string) => {
+const getLocationRanges = (input: string) => {
   const data = parseData(input);
   let ranges = seedsToRanges(data.seeds);
   for (let i = 0; i < chain.length - 1; i++) {
