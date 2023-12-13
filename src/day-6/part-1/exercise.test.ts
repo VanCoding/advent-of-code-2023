@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
-  getWinningGameCounts,
+  getWinningGameCountsFromInput,
   getWinningGameDistances,
   parseGames,
   solve,
@@ -34,7 +34,7 @@ describe("getWinningGameDistances", () => {
 
 describe("getWinningGameCount", () => {
   it("gets winning game counts correctly", () => {
-    expect(getWinningGameCounts(EXAMPLE_INPUT)).toEqual(
+    expect(getWinningGameCountsFromInput(EXAMPLE_INPUT)).toEqual(
       EXAMPLE_WINNING_POSSIBILITIES
     );
   });
