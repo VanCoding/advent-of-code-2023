@@ -1,15 +1,6 @@
-import {
-  first,
-  groupBy,
-  map,
-  pipe,
-  sort,
-  sortBy,
-  sumBy,
-  toPairs,
-} from "remeda";
+import { groupBy, map, pipe, sortBy, sumBy, toPairs } from "remeda";
 
-const cardsOrderedByRank = [
+const cardsOrderedByRankWithoutJokers = [
   "A",
   "K",
   "Q",
@@ -24,8 +15,29 @@ const cardsOrderedByRank = [
   "3",
   "2",
 ] as const;
+const cardsOrderedByRankWithJoker = [
+  "A",
+  "K",
+  "Q",
+  "T",
+  "9",
+  "8",
+  "7",
+  "6",
+  "5",
+  "4",
+  "3",
+  "2",
+  "J",
+] as const;
 
-type Card = (typeof cardsOrderedByRank)[number];
+type Card = (typeof cardsOrderedByRankWithoutJokers)[number];
+
+type CardCounts = Array<{ card: Card; count: number }>;
+
+type Rules = {
+  withJokers: boolean;
+};
 
 export type Hand = {
   id: number;
@@ -43,63 +55,109 @@ export const parseHands = (input: string): Hand[] =>
     };
   });
 
-export const getCountsOfHand = (hand: Hand) =>
+export const getCountsOfHand = (hand: Hand): CardCounts =>
   pipe(
     hand.cards,
     groupBy((card) => card),
     toPairs,
-    map((x) => x[1].length),
-    sortBy([(v) => v, "desc"])
+    map(([card, cards]) => ({ card: card as Card, count: cards.length }))
   );
 
-const isFullHouse = (hand: Hand) => {
+const isFullHouseWithoutJokers = (hand: Hand) => {
   const counts = getCountsOfHand(hand);
   return (
-    counts.some((count) => count === 3) && counts.some((count) => count === 2)
+    counts.some(({ count }) => count === 3) &&
+    counts.some(({ count }) => count === 2)
   );
 };
 
-const isCountOfAKind = (count: number) => (hand: Hand) =>
-  getCountsOfHand(hand)[0] >= count;
+const isCountOfAKindWithoutJokers = (minCount: number) => (hand: Hand) =>
+  getCountsOfHand(hand).some(({ count }) => count >= minCount);
 
 const isTwoPairs = (hand: Hand) =>
-  getCountsOfHand(hand).filter((count) => count === 2).length === 2;
+  getCountsOfHand(hand).filter(({ count }) => count === 2).length === 2;
 
-const handTypesOrderedByRank: Array<(hand: Hand) => boolean> = [
-  isCountOfAKind(5),
-  isCountOfAKind(4),
-  isFullHouse,
-  isCountOfAKind(3),
+const handTypesOrderedByRankWithoutJokers: Array<(hand: Hand) => boolean> = [
+  isCountOfAKindWithoutJokers(5),
+  isCountOfAKindWithoutJokers(4),
+  isFullHouseWithoutJokers,
+  isCountOfAKindWithoutJokers(3),
   isTwoPairs,
-  isCountOfAKind(2),
+  isCountOfAKindWithoutJokers(2),
 ];
 
-export const getScoreOfHandType = (hand: Hand) => {
-  for (let i = 0; i < handTypesOrderedByRank.length; i++) {
-    if (handTypesOrderedByRank[i](hand))
-      return handTypesOrderedByRank.length - i;
+const isFullHouseWithJoker = (hand: Hand) => {
+  const counts = getCountsOfHand(hand);
+  if (
+    counts.some(({ count }) => count === 3) &&
+    counts.some(({ count }) => count === 2)
+  ) {
+    return true;
+  }
+  const jokers = counts.find((count) => count.card === "J")?.count ?? 0;
+  const [first, second] = sortBy(
+    counts.filter(({ card }) => card !== "J"),
+    [(c) => c.count, "desc"]
+  );
+  return 3 - first.count + (2 - second.count) <= jokers;
+};
+
+const isCountOfAKindWithJoker = (minCount: number) => (hand: Hand) => {
+  const counts = getCountsOfHand(hand);
+  if (counts.some(({ count }) => count >= minCount)) return true;
+  const jokers = counts.find((count) => count.card === "J")?.count ?? 0;
+  const [first] = sortBy(
+    counts.filter(({ card }) => card !== "J"),
+    [(c) => c.count, "desc"]
+  );
+  return minCount - first.count <= jokers;
+};
+
+const handTypesOrderedByRankWithJoker: Array<(hand: Hand) => boolean> = [
+  isCountOfAKindWithJoker(5),
+  isCountOfAKindWithJoker(4),
+  isFullHouseWithJoker,
+  isCountOfAKindWithJoker(3),
+  isTwoPairs,
+  isCountOfAKindWithJoker(2),
+];
+
+export const getScoreOfHandType = (rules: Rules) => (hand: Hand) => {
+  const handTypes = rules.withJokers
+    ? handTypesOrderedByRankWithJoker
+    : handTypesOrderedByRankWithoutJokers;
+  for (let i = 0; i < handTypes.length; i++) {
+    if (handTypes[i](hand)) return handTypes.length - i;
   }
   return 0;
 };
 
-const getScoreOfHandCardAt = (cardIndex: number) => (hand: Hand) =>
-  cardsOrderedByRank.length - cardsOrderedByRank.indexOf(hand.cards[cardIndex]);
+const getScoreOfHandCardAt =
+  (rules: Rules, cardIndex: number) => (hand: Hand) => {
+    const cards = rules.withJokers
+      ? cardsOrderedByRankWithJoker
+      : cardsOrderedByRankWithoutJokers;
+    return cards.length - cards.indexOf(hand.cards[cardIndex]);
+  };
 
-export const getHandsOrderedByScore = (hands: Hand[]): Hand[] =>
+export const getHandsOrderedByScore = (hands: Hand[], rules: Rules): Hand[] =>
   sortBy(
     hands,
-    [getScoreOfHandType, "desc"],
-    [getScoreOfHandCardAt(0), "desc"],
-    [getScoreOfHandCardAt(1), "desc"],
-    [getScoreOfHandCardAt(2), "desc"],
-    [getScoreOfHandCardAt(3), "desc"],
-    [getScoreOfHandCardAt(4), "desc"]
+    [getScoreOfHandType(rules), "desc"],
+    [getScoreOfHandCardAt(rules, 0), "desc"],
+    [getScoreOfHandCardAt(rules, 1), "desc"],
+    [getScoreOfHandCardAt(rules, 2), "desc"],
+    [getScoreOfHandCardAt(rules, 3), "desc"],
+    [getScoreOfHandCardAt(rules, 4), "desc"]
   );
 
-export const getHandPoints = (hands: Hand[]) =>
-  getHandsOrderedByScore(hands).map(
+export const getHandPoints = (hands: Hand[], rules: Rules) =>
+  getHandsOrderedByScore(hands, rules).map(
     (hand, index) => (hands.length - index) * hand.bid
   );
 
+export const solveWithRules = (input: string, rules: Rules) =>
+  sumBy(getHandPoints(parseHands(input), rules), (v) => v);
+
 export const solve = (input: string) =>
-  sumBy(getHandPoints(parseHands(input)), (v) => v);
+  sumBy(getHandPoints(parseHands(input), { withJokers: false }), (v) => v);

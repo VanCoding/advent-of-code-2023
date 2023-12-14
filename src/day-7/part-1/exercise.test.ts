@@ -50,25 +50,99 @@ describe("parseHands", () => {
 describe("getCountsOfHand", () => {
   it("gets correct card counts of example hands", () => {
     expect(parseHands(EXAMPLE_INPUT).map(getCountsOfHand)).toEqual([
-      [2, 1, 1, 1],
-      [3, 1, 1],
-      [2, 2, 1],
-      [2, 2, 1],
-      [3, 1, 1],
+      [
+        {
+          card: "2",
+          count: 1,
+        },
+        {
+          card: "3",
+          count: 2,
+        },
+
+        {
+          card: "T",
+          count: 1,
+        },
+        {
+          card: "K",
+          count: 1,
+        },
+      ],
+      [
+        {
+          card: "5",
+          count: 3,
+        },
+        {
+          card: "T",
+          count: 1,
+        },
+        {
+          card: "J",
+          count: 1,
+        },
+      ],
+      [
+        {
+          card: "6",
+          count: 1,
+        },
+        {
+          card: "7",
+          count: 2,
+        },
+        {
+          card: "K",
+          count: 2,
+        },
+      ],
+      [
+        {
+          card: "K",
+          count: 1,
+        },
+        {
+          card: "T",
+          count: 2,
+        },
+        {
+          card: "J",
+          count: 2,
+        },
+      ],
+      [
+        {
+          card: "Q",
+          count: 3,
+        },
+        {
+          card: "J",
+          count: 1,
+        },
+        {
+          card: "A",
+          count: 1,
+        },
+      ],
     ]);
   });
 });
 
 describe("getHandTypeScore", () => {
   it("correctly gets type scores of example hands", () => {
-    expect(parseHands(EXAMPLE_INPUT).map(getScoreOfHandType)).toEqual([]);
+    expect(
+      parseHands(EXAMPLE_INPUT).map(getScoreOfHandType({ withJokers: false }))
+    ).toEqual([1, 3, 2, 2, 3]);
   });
 });
 
 describe("getHandsOrderedByScore", () => {
   it("orders example hands correctly", () => {
     expect(
-      getHandsOrderedByScore(parseHands(EXAMPLE_INPUT)).map((hand) => hand.id)
+      getHandsOrderedByScore(parseHands(EXAMPLE_INPUT), {
+        withJokers: false,
+      }).map((hand) => hand.id)
     ).toEqual(EXAMPLE_ORDER);
   });
 });
