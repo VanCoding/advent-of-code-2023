@@ -1,6 +1,6 @@
 import { indexBy, mapValues, pick, pipe } from "remeda";
 
-type Game = {
+export type Game = {
   sides: Side[];
   directions: Record<string, Direction>;
 };

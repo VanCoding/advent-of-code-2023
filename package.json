@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "divisor": "^1.0.3",
     "remeda": "^1.29.0",
     "typescript": "^5.3.3",
     "vitest": "^1.0.4"
