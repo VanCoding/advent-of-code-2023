@@ -1,6 +1,6 @@
 type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 type Directions = Direction[];
-type Map = Array<Array<Direction[]>>;
+export type Map = Array<Array<Direction[]>>;
 
 const characterToDirections: Record<string, Directions> = {
   S: ["UP", "DOWN", "LEFT", "RIGHT"],
@@ -12,7 +12,7 @@ const characterToDirections: Record<string, Directions> = {
   "7": ["DOWN", "LEFT"],
 };
 
-type Position = {
+export type Position = {
   x: number;
   y: number;
 };
@@ -30,7 +30,7 @@ const getPositionInDirection = ({ x, y }: Position, direction: Direction) => {
   }
 };
 
-const parseMap = (input: string): Map =>
+export const parseMap = (input: string): Map =>
   input
     .split("\n")
     .map((line) =>
@@ -77,7 +77,7 @@ const findStartPosition = (map: Map): Position => {
   throw new Error("could not find start position");
 };
 
-const findRoute = (map: Map): Position[] => {
+export const findRoute = (map: Map): Position[] => {
   const start = findStartPosition(map);
   const [next] = getConnectedPositions(start, map);
   const route: Position[] = [start, next];
