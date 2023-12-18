@@ -30,10 +30,12 @@ const getNextValue = (sequence: number[]): number => {
 export const getNextValues = (sequences: number[][]): number[] =>
   sequences.map(getNextValue);
 
-export const solve = (input: string) =>
+export const solveWithSequences = (sequences: number[][]): number =>
   pipe(
-    input,
-    parseSequences,
+    sequences,
     getNextValues,
     sumBy((v) => v)
   );
+
+export const solve = (input: string) =>
+  pipe(input, parseSequences, solveWithSequences);
