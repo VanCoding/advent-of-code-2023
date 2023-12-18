@@ -9,7 +9,7 @@ import { EXAMPLE_DISTANCES, EXAMPLE_INPUT, INPUT, SOLUTION } from "./input";
 
 describe("getGalaxyDistance", () => {
   it("gets distances of example correctly", () => {
-    const galaxies = expandSpace(parseGalaxies(EXAMPLE_INPUT));
+    const galaxies = expandSpace(parseGalaxies(EXAMPLE_INPUT), 2);
     expect(
       EXAMPLE_DISTANCES.map(({ from, to }) =>
         getGalaxyDistance(galaxies[from], galaxies[to])

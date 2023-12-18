@@ -14,7 +14,7 @@ export const parseGalaxies = (input: string): Galaxy[] =>
         .flatMap((character, x) => (character === "#" ? [{ x, y }] : []))
     );
 
-export const expandSpace = (galaxies: Galaxy[]) =>
+export const expandSpace = (galaxies: Galaxy[], factor: number) =>
   galaxies.map((galaxy): Galaxy => {
     const left = pipe(
       galaxies,
@@ -30,8 +30,8 @@ export const expandSpace = (galaxies: Galaxy[]) =>
     ).length;
 
     return {
-      x: (galaxy.x - left) * 2 + left,
-      y: (galaxy.y - above) * 2 + above,
+      x: (galaxy.x - left) * factor + left,
+      y: (galaxy.y - above) * factor + above,
     };
   });
 
@@ -43,12 +43,16 @@ const getPossibilities = (galaxies: Galaxy[]) =>
     galaxies.slice(index + 1).map((b) => [a, b] as const)
   );
 
-export const solve = (input: string) => {
-  const galaxies = expandSpace(parseGalaxies(input));
-  return pipe(
-    galaxies,
+export const solveWithFactor = (input: string, factor: number) =>
+  pipe(
+    input,
+    parseGalaxies,
+    (galaxies) => expandSpace(galaxies, factor),
     getPossibilities,
     map((pair) => getGalaxyDistance(...pair)),
     sumBy((v) => v)
   );
+
+export const solve = (input: string) => {
+  return solveWithFactor(input, 2);
 };
