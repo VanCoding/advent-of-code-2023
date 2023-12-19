@@ -5,14 +5,15 @@ import {
   EXAMPLE_POSSIBILITIES,
   EXAMPLE_SOLUTION,
   INPUT,
+  INPUT_POSSIBILITIES,
   SOLUTION,
 } from "./input";
 
 describe("getValidPossibilities", () => {
   it("gets correct possibilities for example", () => {
-    expect(parsePuzzles(EXAMPLE_INPUT).map(getValidPossibilities)).toEqual(
-      EXAMPLE_POSSIBILITIES
-    );
+    expect(
+      parsePuzzles(EXAMPLE_INPUT).map((p) => getValidPossibilities(p))
+    ).toEqual(EXAMPLE_POSSIBILITIES);
   });
 });
 

@@ -1,11 +1,11 @@
-import { equals, map, pipe, sumBy } from "remeda";
+import { map, pipe, sumBy } from "remeda";
 
-type Puzzle = {
+export type Puzzle = {
   states: State[];
   damagedCounts: number[];
 };
 
-type State = "damaged" | "unknown" | "working";
+type State = "D" | "U" | "W";
 
 export const parsePuzzles = (input: string): Puzzle[] =>
   input.split("\n").map((line) => {
@@ -14,64 +14,47 @@ export const parsePuzzles = (input: string): Puzzle[] =>
     return {
       states: springs
         .split("")
-        .map((c) =>
-          c === "?" ? "unknown" : c === "#" ? "damaged" : "working"
-        ),
+        .map((c) => (c === "?" ? "U" : c === "#" ? "D" : "W")),
       damagedCounts: groups.split(",").map((damaged) => +damaged),
     };
   });
 
-type QuantifiedStates = Array<{ state: State; count: number }>;
+export const getValidPossibilities = ({
+  states,
+  damagedCounts,
+}: Puzzle): number => {
+  let possibilities = 0;
+  const min = sumBy(damagedCounts, (v) => v) + damagedCounts.length - 1;
 
-const quantify = (states: State[]) => {
-  const quantifiedStates: QuantifiedStates = [{ state: states[0], count: 1 }];
-  for (let i = 1; i < states.length; i++) {
-    if (states[i] === quantifiedStates[quantifiedStates.length - 1].state) {
-      quantifiedStates[quantifiedStates.length - 1].count++;
-    } else {
-      quantifiedStates.push({ state: states[i], count: 1 });
+  for (let i = 0; i < states.length - damagedCounts[0] + 1; i++) {
+    if (states.length - i < min) continue;
+    if (
+      states.slice(i, i + damagedCounts[0]).every((s) => s !== "W") &&
+      states[i + damagedCounts[0]] !== "D"
+    ) {
+      const remaining = states.slice(i + damagedCounts[0] + 1);
+      if (damagedCounts.length === 1) {
+        if (!remaining.includes("D")) {
+          possibilities++;
+        }
+      } else if (remaining.length > 0) {
+        possibilities += getValidPossibilities({
+          damagedCounts: damagedCounts.slice(1),
+          states: remaining,
+        });
+      }
     }
+    if (states[i] === "D") break;
   }
-  return quantifiedStates;
-};
 
-const findPossibilities = (puzzle: Puzzle): State[][] => {
-  let possibilities: State[][] = [puzzle.states];
-  for (let i = 0; i < puzzle.states.length; i++) {
-    if (puzzle.states[i] === "unknown") {
-      possibilities = possibilities.flatMap((states) => {
-        const a = [...states];
-        a[i] = "damaged";
-        const b = [...states];
-        b[i] = "working";
-        return [a, b];
-      });
-    }
-  }
   return possibilities;
 };
 
-const isPossibilityValid = (
-  states: QuantifiedStates,
-  damagedCounts: number[]
-) => {
-  const damaged = states
-    .filter(({ state }) => state === "damaged")
-    .map(({ count }) => count);
-
-  return equals(damaged, damagedCounts);
-};
-
-export const getValidPossibilities = (puzzle: Puzzle) =>
-  findPossibilities(puzzle)
-    .map(quantify)
-    .filter((states) => isPossibilityValid(states, puzzle.damagedCounts))
-    .length;
-
-export const solve = (input: string) =>
+export const solvePuzzles = (puzzles: Puzzle[]) =>
   pipe(
-    input,
-    parsePuzzles,
+    puzzles,
     map(getValidPossibilities),
     sumBy((v) => v)
   );
+
+export const solve = (input: string) => pipe(input, parsePuzzles, solvePuzzles);
