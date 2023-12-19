@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { findReflection, getPatternValue, parse, solve } from "./exercise";
+import {
+  findReflection,
+  getPatternValue,
+  normalMirror,
+  parse,
+  solve,
+} from "./exercise";
 import { EXAMPLE_INPUT, EXAMPLE_SOLUTION, INPUT, SOLUTION } from "./input";
 
 describe("findReflection", () => {
@@ -8,7 +14,7 @@ describe("findReflection", () => {
     expect(
       patterns
         .flatMap((p) => [p.horizontalLines, p.verticalLines])
-        .map(findReflection)
+        .map((p) => findReflection(p, normalMirror))
     ).toEqual([0, 5, 4, 0]);
   });
 });
@@ -16,7 +22,9 @@ describe("findReflection", () => {
 describe("getPatternValue", () => {
   it("gets correct pattern values for example", () => {
     const patterns = parse(EXAMPLE_INPUT);
-    expect(patterns.map(getPatternValue)).toEqual([5, 400]);
+    expect(patterns.map((p) => getPatternValue(p, normalMirror))).toEqual([
+      5, 400,
+    ]);
   });
 });
 
