@@ -22,7 +22,7 @@ O..#.OO...
 
 export const EXAMPLE_SOLUTION = 136;
 
-export const SOLUTION = 0;
+export const SOLUTION = 109654;
 
 export const INPUT = `.#..#..O..O.....#O..O#O.O#.#.##O........#O..O...O#.O.O....##..#O..#..O.O#.O..#.O#O.#.#...#...#....O.
 #.O#.##..O.OO#..OO..O...O...#.O..#O...#..O...OO#....O...O#O...OO..##...O.O.O.....OO..#......O..##...
