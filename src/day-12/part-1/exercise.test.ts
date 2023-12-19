@@ -5,7 +5,6 @@ import {
   EXAMPLE_POSSIBILITIES,
   EXAMPLE_SOLUTION,
   INPUT,
-  INPUT_POSSIBILITIES,
   SOLUTION,
 } from "./input";
 

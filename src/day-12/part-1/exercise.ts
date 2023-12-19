@@ -19,14 +19,18 @@ export const parsePuzzles = (input: string): Puzzle[] =>
     };
   });
 
-export const getValidPossibilities = ({
-  states,
-  damagedCounts,
-}: Puzzle): number => {
+export const getValidPossibilities = (
+  { states, damagedCounts }: Puzzle,
+  stateIndex: number = 0,
+  cache: Map<string, number> = new Map()
+): number => {
+  const key = `${stateIndex}/${damagedCounts.length}`;
+  const cached = cache.get(key);
+  if (cached) return cached;
   let possibilities = 0;
   const min = sumBy(damagedCounts, (v) => v) + damagedCounts.length - 1;
 
-  for (let i = 0; i < states.length - damagedCounts[0] + 1; i++) {
+  for (let i = stateIndex; i < states.length - damagedCounts[0] + 1; i++) {
     if (states.length - i < min) continue;
     if (
       states.slice(i, i + damagedCounts[0]).every((s) => s !== "W") &&
@@ -38,14 +42,19 @@ export const getValidPossibilities = ({
           possibilities++;
         }
       } else if (remaining.length > 0) {
-        possibilities += getValidPossibilities({
-          damagedCounts: damagedCounts.slice(1),
-          states: remaining,
-        });
+        possibilities += getValidPossibilities(
+          {
+            damagedCounts: damagedCounts.slice(1),
+            states,
+          },
+          i + damagedCounts[0] + 1,
+          cache
+        );
       }
     }
     if (states[i] === "D") break;
   }
+  cache.set(key, possibilities);
 
   return possibilities;
 };
