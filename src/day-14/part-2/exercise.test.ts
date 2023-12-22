@@ -6,8 +6,11 @@ import { EXAMPLE_SOLUTION, SOLUTION } from "./input";
 describe("findPattern", () => {
   it("finds pattern", () => {
     expect(
-      findPattern([1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3])
-    ).toEqual([1, 2, 3]);
+      findPattern([
+        1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3,
+        1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3,
+      ])
+    ).toEqual([3, 1, 2]);
   });
 });
 
