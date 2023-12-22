@@ -10,7 +10,7 @@ import { parse, solve, tilt } from "./exercise";
 
 describe("tilt", () => {
   it("tilts example platform correctly", () => {
-    expect(tilt(parse(EXAMPLE_INPUT))).toEqual(parse(EXAMPLE_TILTED));
+    expect(tilt(parse(EXAMPLE_INPUT), "UP")).toEqual(parse(EXAMPLE_TILTED));
   });
 });
 

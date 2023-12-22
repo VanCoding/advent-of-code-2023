@@ -7,19 +7,49 @@ export type Platform = Tile[][];
 export const parse = (input: string) =>
   input.split("\n").map((line) => line.split("") as Tile[]);
 
-const moveUp = (platform: Platform, x: number, y: number) => {
-  for (let i = y - 1; i >= 0; i--) {
-    if (platform[i][x] !== ".") return;
-    platform[i][x] = "O";
-    platform[i + 1][x] = ".";
+type Direction = "UP" | "RIGHT" | "DOWN" | "LEFT";
+type Position = { x: number; y: number };
+
+const next: Record<
+  Direction,
+  (platform: Platform, position: Position) => Position | null
+> = {
+  DOWN: (platform, { x, y }) =>
+    y < platform.length - 1 ? { x, y: y + 1 } : null,
+  LEFT: (platform, { x, y }) => (x > 0 ? { x: x - 1, y } : null),
+  UP: (platform, { x, y }) => (y > 0 ? { x, y: y - 1 } : null),
+  RIGHT: (platform, { x, y }) =>
+    x < platform[y].length - 1 ? { x: x + 1, y } : null,
+};
+
+const getStart = (platform: Platform, direction: Direction): Position => {
+  if (direction === "UP" || direction === "LEFT") return { x: 0, y: 0 };
+  return { x: platform[0].length - 1, y: platform.length - 1 };
+};
+
+const getDelta = (direction: Direction): { x: 1 | -1; y: 1 | -1 } => {
+  if (direction === "UP" || direction === "LEFT") return { x: 1, y: 1 };
+  return { x: -1, y: -1 };
+};
+
+const move = (platform: Platform, start: Position, direction: Direction) => {
+  let previous = start;
+  let position: Position | null = null;
+  while ((position = next[direction](platform, previous))) {
+    if (platform[position.y][position.x] !== ".") return;
+    platform[position.y][position.x] = "O";
+    platform[previous.y][previous.x] = ".";
+    previous = position;
   }
 };
 
-export const tilt = (platform: Platform): Platform => {
-  for (let y = 1; y < platform.length; y++) {
-    for (let x = 0; x < platform[y].length; x++) {
+export const tilt = (platform: Platform, direction: Direction) => {
+  const start = getStart(platform, direction);
+  const delta = getDelta(direction);
+  for (let y = start.y; y < platform.length && y >= 0; y += delta.y) {
+    for (let x = start.x; x < platform[y].length && x >= 0; x += delta.y) {
       if (platform[y][x] === "O") {
-        moveUp(platform, x, y);
+        move(platform, { x, y }, direction);
       }
     }
   }
@@ -33,4 +63,5 @@ export const getLoad = (platform: Platform) =>
     ),
     (v) => v
   );
-export const solve = (input: string) => pipe(input, parse, tilt, getLoad);
+export const solve = (input: string) =>
+  pipe(input, parse, (platform) => tilt(platform, "UP"), getLoad);
