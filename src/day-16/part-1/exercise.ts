@@ -1,8 +1,8 @@
 import { map, pipe, sumBy } from "remeda";
 
-type Tiles = Tile[][];
+export type Tiles = Tile[][];
 type Tile = "/" | "\\" | "|" | "-" | ".";
-type Beam = {
+export type Beam = {
   x: number;
   y: number;
   direction: Direction;
@@ -89,9 +89,11 @@ export const processBeams = (beams: Beam[], tiles: Tiles): Direction[][][] => {
   return energizedTiles;
 };
 
-export const solve = (input: string) =>
+export const getEnergizedTileCount = (beam: Beam, tiles: Tiles): number =>
   pipe(
-    processBeams([{ x: 0, y: 0, direction: "RIGHT" }], parseTiles(input)),
+    processBeams([beam], tiles),
     map((line) => line.filter((tile) => tile.length > 0)),
     sumBy((v) => v.length)
   );
+export const solve = (input: string) =>
+  getEnergizedTileCount({ x: 0, y: 0, direction: "RIGHT" }, parseTiles(input));
