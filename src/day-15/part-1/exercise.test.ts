@@ -12,6 +12,10 @@ describe("hash", () => {
   it("hashes example sequences correctly", () => {
     expect(parse(EXAMPLE_INPUT).map(hash)).toEqual(EXAMPLE_STEPS);
   });
+
+  it("hashes rn and cm to the same value", () => {
+    expect(hash("rn")).toEqual(hash("cm"));
+  });
 });
 
 describe("solve", () => {
